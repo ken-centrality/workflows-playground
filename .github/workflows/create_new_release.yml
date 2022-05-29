@@ -32,11 +32,11 @@ jobs:
           git push --set-upstream origin release/v${{ github.event.inputs.version }}
 
       - name: Create pull request to `main`
-        run: gh pr create --base main --title "Release v${{ github.event.inputs.version }}" --body ""
+        run: gh pr create --base main --title "Release v${{ github.event.inputs.version }} [main]" --body ""
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create pull request to `develop`
-        run: gh pr create --base develop --title "Release v${{ github.event.inputs.version }} [back-merge]" --body ""
+        run: gh pr create --base develop --title "Release v${{ github.event.inputs.version }} [develop]" --body ""
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
