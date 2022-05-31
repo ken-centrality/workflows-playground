@@ -50,21 +50,21 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create pull request to `main`
-        if: ${{ github.event.inputs.main_branch == 'true' }}
+        if: ${{ github.event.inputs.main_branch == true }}
         run: |
           gh pr create --draft --base main --title "Hotfix v${{ github.event.inputs.version }} [main]" --body "**NOTE**: Use Standard Merge option"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create pull request to `nikau`
-        if: ${{ github.event.inputs.nikau_branch == 'true' }}
+        if: ${{ github.event.inputs.nikau_branch == true }}
         run: |
           gh pr create --draft --base nikau --title "Hotfix v${{ github.event.inputs.version }} [nikau]" --body "**NOTE**: Use Standard Merge option"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create pull request to `rata`
-        if: ${{ github.event.inputs.rata_branch == 'true' }}
+        if: ${{ github.event.inputs.rata_branch == true }}
         run: |
           gh pr create --draft --base rata --title "Hotfix v${{ github.event.inputs.version }} [rata]" --body "**NOTE**: Use Standard Merge option"
         env:
