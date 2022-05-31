@@ -8,7 +8,8 @@ on:
         required: true
 
 jobs:
-  create-new-hotfix-main:
+  create-new-hotfix:
+    name: "New hotfix"
     uses: ./.github/workflows/new_hotfix.yml
     with:
       version: ${{ github.event.inputs.version }}
