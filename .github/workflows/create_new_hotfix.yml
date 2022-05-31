@@ -13,6 +13,4 @@ jobs:
     uses: ./.github/workflows/new_hotfix.yml
     with:
       version: ${{ github.event.inputs.version }}
-      main_branch: 'yes'
-      rata_branch: 'yes'
-      nikau_branch: 'no'
+      main_branch: true
