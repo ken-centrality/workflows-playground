@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: main
+          ref: develop
 
       - name: Initialize mandatory git config
         run: |
@@ -48,13 +48,6 @@ jobs:
           gh pr create --draft --base develop --title "Release v${{ inputs.version }} [develop]" --body "**IMPORTANT**: Use Squash Merge option"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Debug
-        run: |
-          echo "${{ inputs.version }}"
-          echo "${{ inputs.main_branch }}"
-          echo "${{ inputs.rata_branch }}"
-          echo "${{ inputs.nikau_branch }}"
 
       - name: Create pull request to `main`
         if: ${{ inputs.main_branch == true }}
