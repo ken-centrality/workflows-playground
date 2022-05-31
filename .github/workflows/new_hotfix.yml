@@ -7,17 +7,17 @@ on:
         type: string
         required: true
       main_branch:
-        type: boolean
+        type: string
         required: true
-        default: true
+        default: 'yes'
       rata_branch:
-        type: boolean
-        required: true
-        default: false
+        type: string
+        required: false
+        default: 'no'
       nikau_branch:
-        type: boolean
-        required: true
-        default: false
+        type: string
+        required: false
+        default: 'no'
 
 jobs:
   create-new-hotfix:
@@ -50,21 +50,21 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create pull request to `main`
-        if: ${{ github.event.inputs.main_branch == true }}
+        if: ${{ github.event.inputs.main_branch == 'yes' }}
         run: |
           gh pr create --draft --base main --title "Hotfix v${{ github.event.inputs.version }} [main]" --body "**NOTE**: Use Standard Merge option"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create pull request to `nikau`
-        if: ${{ github.event.inputs.nikau_branch == true }}
+        if: ${{ github.event.inputs.nikau_branch == 'yes' }}
         run: |
           gh pr create --draft --base nikau --title "Hotfix v${{ github.event.inputs.version }} [nikau]" --body "**NOTE**: Use Standard Merge option"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create pull request to `rata`
-        if: ${{ github.event.inputs.rata_branch == true }}
+        if: ${{ github.event.inputs.rata_branch == 'yes' }}
         run: |
           gh pr create --draft --base rata --title "Hotfix v${{ github.event.inputs.version }} [rata]" --body "**NOTE**: Use Standard Merge option"
         env:
