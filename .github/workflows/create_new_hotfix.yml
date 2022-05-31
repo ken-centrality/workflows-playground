@@ -8,8 +8,10 @@ on:
         required: true
 
 jobs:
-  create-new-hotfix:
+  create-new-hotfix-main:
     uses: ./.github/workflows/new_hotfix
     with:
       version: ${{ github.event.inputs.version }}
-      branch: main
+      main_branch: true
+      rata_branch: true
+      nikau_branch: true

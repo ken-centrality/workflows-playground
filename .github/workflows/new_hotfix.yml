@@ -6,10 +6,18 @@ on:
       version:
         type: string
         required: true
-      deployment_branch:
-        type: string
+      main_branch:
+        type: boolean
         required: true
-        default: main
+        default: true
+      rata_branch:
+        type: boolean
+        required: true
+        default: false
+      nikau_branch:
+        type: boolean
+        required: true
+        default: false
 
 jobs:
   create-new-hotfix:
@@ -35,12 +43,31 @@ jobs:
           git commit --message "Prepare hotfix ${{ github.event.inputs.version }}"
           git push --set-upstream origin hotfix/v${{ github.event.inputs.version }}
 
-      - name: Create pull request to `${{ github.event.inputs.branch }}`
-        run: gh pr create --draft --base ${{ github.event.inputs.branch }} --title "Hotfix v${{ github.event.inputs.version }} [${{ github.event.inputs.branch }}]" --body ""
+      - name: Create pull request to `develop`
+        run: |
+          gh pr create --draft --base develop --title "Hotfix v${{ github.event.inputs.version }} [develop]" --body "**NOTE**: Use Squash Merge option"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create pull request to `develop`
-        run: gh pr create --draft --base develop --title "Hotfix v${{ github.event.inputs.version }} [develop]" --body ""
+      - name: Create pull request to `main`
+        if: github.event.inputs.main_branch
+        run: |
+          gh pr create --draft --base main --title "Hotfix v${{ github.event.inputs.version }} [main]" --body "**NOTE**: Use Standard Merge option"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create pull request to `nikau`
+        if: github.event.inputs.nikau_branch
+        run: |
+          gh pr create --draft --base nikau --title "Hotfix v${{ github.event.inputs.version }} [nikau]" --body "**NOTE**: Use Standard Merge option"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create pull request to `rata`
+        if: github.event.inputs.rata_branch
+        run: |
+          gh pr create --draft --base rata --title "Hotfix v${{ github.event.inputs.version }} [rata]" --body "**NOTE**: Use Standard Merge option"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
