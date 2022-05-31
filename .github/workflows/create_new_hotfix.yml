@@ -9,7 +9,7 @@ on:
 
 jobs:
   create-new-hotfix-main:
-    uses: ./.github/workflows/new_hotfix
+    uses: ./.github/workflows/new_hotfix.yml
     with:
       version: ${{ github.event.inputs.version }}
       main_branch: true
