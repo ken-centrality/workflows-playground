@@ -16,8 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "Branch: ${{ inputs.branch }}"
-          echo "Prefix: ${{ inputs.prefix }}"
-          echo "Label: ${{ github.event.label.name }}"
-          echo "Head Ref: ${{ github.head_ref }}"
-          echo "Base Ref: ${{ github.base_ref }}"
+          version="${head_ref/prefix/}"
+          echo "Tag: ${version}"
+          echo "Branch: ${branch}"
+          echo "Prefix: ${prefix}"
+          echo "Label: ${label}"
+          echo "Head Ref: ${head_ref}"
+          echo "Base Ref: ${base_ref}"
+        env:
+          head_ref: ${{ github.head_ref }}
+          base_ref: ${{ github.base_ref }}
+          prefix: ${{ inputs.prefix }}
+          branch: ${{ inputs.branch }}
+          label: ${{ github.event.label.name }}
