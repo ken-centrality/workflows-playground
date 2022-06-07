@@ -6,14 +6,26 @@ on:
       - labeled
 
 jobs:
-  deploy:
-    name: "Deploy to branch"
+  deploy-rata:
+    name: "Deploy to `rata`"
     if: ${{ github.event.label.name == 'deploy:rata' }}
     runs-on: ubuntu-latest
 
     steps:
-      - run: echo "${{ github.base_ref }}"
+      - run: echo "${{ github.head_ref }}"
       - uses: nicksnell/action-reset-repo@master
         with:
-          base_branch: ${{ github.base_ref }}
+          base_branch: ${{ github.head_ref }}
           reset_branch: rata
+
+  deploy-nikau:
+    name: "Deploy to `nikau`"
+    if: ${{ github.event.label.name == 'deploy:nikau' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo "${{ github.head_ref }}"
+      - uses: nicksnell/action-reset-repo@master
+        with:
+          base_branch: ${{ github.head_ref }}
+          reset_branch: nikau
