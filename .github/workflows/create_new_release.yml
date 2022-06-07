@@ -13,4 +13,3 @@ jobs:
     uses: ./.github/workflows/new_release.yml
     with:
       version: ${{ github.event.inputs.version }}
-      main_branch: true

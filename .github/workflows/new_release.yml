@@ -6,18 +6,6 @@ on:
       version:
         type: string
         required: true
-      main_branch:
-        type: boolean
-        required: true
-        default: true
-      rata_branch:
-        type: boolean
-        required: false
-        default: false
-      nikau_branch:
-        type: boolean
-        required: false
-        default: false
 
 jobs:
   create-new-release:
@@ -45,27 +33,6 @@ jobs:
 
       - name: Create pull request to `develop`
         run: |
-          gh pr create --draft --base develop --title "Release v${{ inputs.version }} [develop]" --body "**IMPORTANT**: Use Squash Merge option"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create pull request to `main`
-        if: ${{ inputs.main_branch == true }}
-        run: |
-          gh pr create --draft --base main --title "Release v${{ inputs.version }} [main]" --body "**IMPORTANT**: Use Standard Merge option"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create pull request to `nikau`
-        if: ${{ inputs.nikau_branch == true }}
-        run: |
-          gh pr create --draft --base nikau --title "Release v${{ inputs.version }} [nikau]" --body "**IMPORTANT**: Use Standard Merge option"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create pull request to `rata`
-        if: ${{ inputs.rata_branch == true }}
-        run: |
-          gh pr create --draft --base rata --title "Release v${{ inputs.version }} [rata]" --body "**IMPORTANT**: Use Standard Merge option"
+          gh pr create --draft --base develop --title "Release v${{ inputs.version }} [develop]" --body ""
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
