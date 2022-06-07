@@ -8,6 +8,15 @@ on:
       - "develop"
 
 jobs:
+  debug:
+    name: "Debug"
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "${{ github.event.label.name == 'deploy:rata' }}"
+          echo "${{ startsWith(github.head_ref, 'release/') }}"
+          echo "${{ startsWith(github.head_ref, 'hotfix/') }}"
+
   deploy-rata:
     name: "Deploy to `rata`"
     runs-on: ubuntu-latest
