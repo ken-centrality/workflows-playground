@@ -10,6 +10,6 @@ on:
 jobs:
   create-new-release:
     name: "Create"
-    uses: ./.github/workflows/reusable/release.yml
+    uses: ./.github/workflows/_release.yml
     with:
       version: ${{ github.event.inputs.version }}
