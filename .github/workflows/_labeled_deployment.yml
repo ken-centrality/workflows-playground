@@ -6,18 +6,43 @@ on:
       branch:
         type: string
         required: true
-      prefix:
+      release_prefix:
         type: string
-        required: true
+        required: false
+        default: "release/v"
+      hotfix_prefix:
+        type: string
+        required: false
+        default: "hotfix/v"
 
 jobs:
   new-labeled-deployment:
     name: "Deployment"
     runs-on: ubuntu-latest
     steps:
+      - name: "Identify channel and version number"
+        id: identify
+        run: |
+          if ${{ startsWith(env.head_ref, env.hotfix_prefix) }}; then
+            version="${head_ref/$hotfix_prefix/v}"
+            type="Hotfix"
+          fi
+
+          if ${{ startsWith(env.head_ref, env.release_prefix) }}; then
+            version="${head_ref/$release_prefix/v}"
+            type="Release"
+          fi
+
+          echo "::set-output name=version::${version}"
+          echo "::set-output name=type::${type}"
+        env:
+          head_ref: ${{ github.head_ref }}
+          release_prefix: ${{ inputs.release_prefix }}
+          hotfix_prefix: ${{ inputs.hotfix_prefix }}
+
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
       - run: |
-          echo "Branch: ${{ inputs.branch }}"
-          echo "Prefix: ${{ inputs.prefix }}"
-          echo "Label: ${{ github.event.label.name }}"
-          echo "Head Ref: ${{ github.head_ref }}"
-          echo "Base Ref: ${{ github.base_ref }}"
+          git tag "${{ inputs.branch }}/${{ steps.identify.outputs.version }}"
+          git push origin --tags --force
