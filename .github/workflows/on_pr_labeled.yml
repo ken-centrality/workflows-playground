@@ -1,0 +1,19 @@
+name: "On PR is labeled"
+
+on:
+  pull_request:
+    types:
+      - labeled
+
+jobs:
+  deploy:
+    name: "Deploy to branch"
+    if: ${{ github.event.label.name == 'deploy:rata' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo "${{ github.base_ref }}"
+      - uses: nicksnell/action-reset-repo@master
+        with:
+          base_branch: ${{ github.base_ref }}
+          reset_branch: rata
