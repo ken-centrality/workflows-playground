@@ -5,14 +5,15 @@ on:
     types:
       - labeled
     branches:
-      - 'release/**'
-      - 'hotfix/**'
+      - "develop"
 
 jobs:
   deploy-rata:
     name: "Deploy to `rata`"
-    if: ${{ github.event.label.name == 'deploy:rata' }}
     runs-on: ubuntu-latest
+    if: |
+      github.event.label.name == 'deploy:rata' &&
+      (startsWith(github.head_ref, 'release/') || startsWith(github.head_ref, 'hotfix/'))
 
     steps:
       - run: echo "${{ github.head_ref }}"
@@ -23,7 +24,9 @@ jobs:
 
   deploy-nikau:
     name: "Deploy to `nikau`"
-    if: ${{ github.event.label.name == 'deploy:nikau' }}
+    if: |
+      github.event.label.name == 'deploy:rata' &&
+      (startsWith(github.head_ref, 'release/') || startsWith(github.head_ref, 'hotfix/'))
     runs-on: ubuntu-latest
 
     steps:
