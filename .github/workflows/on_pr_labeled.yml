@@ -8,6 +8,16 @@ on:
       - "develop"
 
 jobs:
+  debug:
+    name: "Debug"
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "${{ github.event.label.name }}"
+          echo "${{ github.event.label.name == 'deploy:rata' }}"
+          echo "${{ startsWith(github.head_ref, 'release/') }}"
+          echo "${{ startsWith(github.head_ref, 'hotfix/') }}"
+
   deploy-rata:
     name: "Deploy to `rata`"
     runs-on: ubuntu-latest
@@ -16,6 +26,7 @@ jobs:
       (startsWith(github.head_ref, 'release/') || startsWith(github.head_ref, 'hotfix/'))
 
     steps:
+      - run: echo "${{ github.event.label.name }}"
       - run: echo "${{ github.head_ref }}"
       - uses: nicksnell/action-reset-repo@master
         with:
@@ -25,11 +36,12 @@ jobs:
   deploy-nikau:
     name: "Deploy to `nikau`"
     if: |
-      github.event.label.name == 'deploy:rata' &&
+      github.event.label.name == 'deploy:nikau' &&
       (startsWith(github.head_ref, 'release/') || startsWith(github.head_ref, 'hotfix/'))
     runs-on: ubuntu-latest
 
     steps:
+      - run: echo "${{ github.event.label.name }}"
       - run: echo "${{ github.head_ref }}"
       - uses: nicksnell/action-reset-repo@master
         with:
