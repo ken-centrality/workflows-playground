@@ -1,0 +1,23 @@
+name: "[Reusable] Labeled Deployment"
+
+on:
+  workflow_call:
+    inputs:
+      branch:
+        type: string
+        required: true
+      prefix:
+        type: string
+        required: true
+
+jobs:
+  new-labeled-deployment:
+    name: "Deployment"
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Branch: ${{ inputs.branch }}"
+          echo "Prefix: ${{ inputs.prefix }}"
+          echo "Label: ${{ github.event.label.name }}"
+          echo "Head Ref: ${{ github.head_ref }}"
+          echo "Base Ref: ${{ github.base_ref }}"

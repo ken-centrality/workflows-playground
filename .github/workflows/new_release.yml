@@ -1,38 +1,15 @@
-name: "[Reusable] New release"
+name: "New Release"
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       version:
-        type: string
+        description: 'Version number'
         required: true
 
 jobs:
   create-new-release:
-    name: "Create new release"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: develop
-
-      - name: Initialize mandatory git config
-        run: |
-          git config user.name "GitHub actions"
-          git config user.email noreply@github.com
-
-      - name: Create release branch
-        run: git checkout -b release/v${{ inputs.version }}
-
-      - name: Update version
-        run: |
-          npm version ${{ inputs.version }} --no-git-tag-version
-          git add package.json
-          git commit --message "Prepare release v${{ inputs.version }}"
-          git push --set-upstream origin release/v${{ inputs.version }}
-
-      - name: Create pull request to `develop`
-        run: |
-          gh pr create --draft --base develop --title "Release v${{ inputs.version }} [develop]" --body ""
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    name: "Create"
+    uses: ./.github/workflows/reusable/release.yml
+    with:
+      version: ${{ github.event.inputs.version }}
