@@ -45,4 +45,6 @@ jobs:
           ref: ${{ github.head_ref }}
       - run: |
           git tag "${{ inputs.branch }}/${{ steps.identify.outputs.version }}"
+          git checkout -b ${{ inputs.branch }} ${{ inputs.branch }}/${{ steps.identify.outputs.version }}
+          git push origin ${{ inputs.branch }} --force
           git push origin --tags --force
