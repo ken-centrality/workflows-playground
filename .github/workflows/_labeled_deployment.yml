@@ -40,10 +40,13 @@ jobs:
           release_prefix: ${{ inputs.release_prefix }}
           hotfix_prefix: ${{ inputs.hotfix_prefix }}
 
-      - uses: actions/checkout@v3
+      - name: Checkout branch `${{ github.head_ref }}`
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
-      - run: |
+
+      - name: Tag and set `${{ inputs.branch }}` to `${{ github.head_ref }}`
+        run: |
           git tag "${{ inputs.branch }}/${{ steps.identify.outputs.version }}"
           git checkout -b ${{ inputs.branch }} ${{ inputs.branch }}/${{ steps.identify.outputs.version }}
           git push origin ${{ inputs.branch }} --tags --force
