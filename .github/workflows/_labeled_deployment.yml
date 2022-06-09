@@ -25,27 +25,26 @@ jobs:
         run: |
           if ${{ startsWith(env.head_ref, env.hotfix_prefix) }}; then
             version="${head_ref/$hotfix_prefix/v}"
-            type="Hotfix"
           fi
 
           if ${{ startsWith(env.head_ref, env.release_prefix) }}; then
             version="${head_ref/$release_prefix/v}"
-            type="Release"
           fi
 
           echo "::set-output name=version::${version}"
-          echo "::set-output name=type::${type}"
         env:
           head_ref: ${{ github.head_ref }}
           release_prefix: ${{ inputs.release_prefix }}
           hotfix_prefix: ${{ inputs.hotfix_prefix }}
 
       - name: Checkout branch `${{ github.head_ref }}`
+        if: steps.identify.outputs.version != ''
         uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
 
       - name: Tag and set `${{ inputs.branch }}` to `${{ github.head_ref }}`
+        if: steps.identify.outputs.version != ''
         run: |
           git tag "${{ inputs.branch }}/${{ steps.identify.outputs.version }}"
           git checkout -b ${{ inputs.branch }} ${{ inputs.branch }}/${{ steps.identify.outputs.version }}
