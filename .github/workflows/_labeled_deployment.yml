@@ -47,5 +47,6 @@ jobs:
         if: steps.identify.outputs.version != ''
         run: |
           git tag "${{ inputs.branch }}/${{ steps.identify.outputs.version }}"
+          git tag "${{ github.head_ref }}"
           git checkout -b ${{ inputs.branch }} ${{ inputs.branch }}/${{ steps.identify.outputs.version }}
           git push origin ${{ inputs.branch }} --tags --force
