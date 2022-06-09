@@ -13,3 +13,8 @@ jobs:
     uses: ./.github/workflows/_labeled_deployment.yml
     with:
       branch: rata
+  deploy-nikau:
+    name: "Nikau"
+    uses: ./.github/workflows/_labeled_deployment.yml
+    with:
+      branch: nikau
