@@ -10,21 +10,13 @@ on:
 jobs:
   deploy-rata:
     name: "Rata"
+    if: ${{ github.event.label.name == 'deploy:rata' }}
     uses: ./.github/workflows/_labeled_deployment.yml
     with:
       branch: rata
-      prefix: "release/v"
-
   deploy-nikau:
     name: "Nikau"
+    if: ${{ github.event.label.name == 'deploy:nikau' }}
     uses: ./.github/workflows/_labeled_deployment.yml
     with:
       branch: nikau
-      prefix: "release/v"
-
-  deploy-main:
-    name: "Mainnet"
-    uses: ./.github/workflows/_labeled_deployment.yml
-    with:
-      branch: main
-      prefix: "release/v"
