@@ -25,17 +25,17 @@ jobs:
         run: |
           if ${{ startsWith(env.head_ref, env.hotfix_prefix) }}; then
             version="${head_ref/$hotfix_prefix/v}"
-            type=hotfix
+            type=Hotfix
           fi
 
           if ${{ startsWith(env.head_ref, env.release_prefix) }}; then
             version="${head_ref/$release_prefix/v}"
-            type=release
+            type=Release
           fi
 
           echo "::set-output name=version::${version}"
           echo "::set-output name=type::${type}"
-          echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M')"
+          echo "::set-output name=date::$(date +'%Y-%m-%d %T+%Z')"
         env:
           head_ref: ${{ github.head_ref }}
           release_prefix: ${{ inputs.release_prefix }}
@@ -55,6 +55,6 @@ jobs:
       - name: Tag and set `${{ inputs.branch }}` to `${{ github.head_ref }}`
         if: steps.identify.outputs.version != ''
         run: |
-          git tag -a "${{ inputs.branch }}/${{ steps.identify.outputs.version }}" -m "${{ steps.identify.outputs.type }} / ${{ steps.identify.outputs.date }}"
+          git tag -a "${{ inputs.branch }}/${{ steps.identify.outputs.version }}" -m "${{ steps.identify.outputs.type }} at ${{ steps.identify.outputs.date }}"
           git checkout -b ${{ inputs.branch }} ${{ inputs.branch }}/${{ steps.identify.outputs.version }}
           git push origin ${{ inputs.branch }} --tags --force
